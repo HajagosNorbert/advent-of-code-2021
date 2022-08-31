@@ -52,7 +52,7 @@ mod tests {
     }
 }
 fn main() {
-    let input = aoc2021::read_input();
+    let input = aoc2021::read_input_file("1.txt");
     let input = split_into_numbers(&input);
     let result = task2(&input);
     println!("{result}");
