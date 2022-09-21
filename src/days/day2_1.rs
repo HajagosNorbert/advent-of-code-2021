@@ -1,10 +1,8 @@
-use aoc2021;
-fn main() {
-    let input = aoc2021::read_input_file("2.txt");
+pub fn solve(input: &str) -> String {
     let movements = format_input(&input);
     let pos = calculate_position(&movements);
     let result = pos.forward * pos.depth;
-    println!("{result}");
+    result.to_string()
 }
 
 fn calculate_position(movements: &[Movement]) -> Position {
