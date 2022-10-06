@@ -61,7 +61,7 @@ impl Board {
             .collect::<Vec<Vec<Cell>>>();
         Board { cells }
     }
-// use indicies instead of iterators
+// use array of structs to struct of arrays transformation (possibly with a flattened array ) then watch prime how he did it.
     fn mark(&mut self, num: u8) -> Option<u32> {
         for rownum in 0..5 {
             for colnum in 0..5 {
@@ -78,7 +78,7 @@ impl Board {
         None
     }
 
-fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
+fn check_if_bingo(&mut self, rownum: usize, colnum: usize) -> Option<u32> {
         let mut marked_rows: u8 = 0;
         let mut marked_cols: u8 = 0;
         for i in 0..5 {
@@ -90,7 +90,8 @@ fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
             };
         }
 
-        self.cells.get(rownum).unwrap().get(colnum).unwrap().marked = true;
+        let cell = self.cells.get_mut(rownum).unwrap().get_mut(colnum).unwrap();
+        cell.marked = true ;
         if marked_rows == 5 || marked_cols == 5 {
             return Some(1);
         }
