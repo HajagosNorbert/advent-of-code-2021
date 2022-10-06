@@ -1,3 +1,5 @@
+use std::fs;
+
 pub fn solve(input: &str) -> String {
     //get the generated numbers into a [u8]
     let (generated_nums, boards) = input.split_once('\n').unwrap();
@@ -65,20 +67,20 @@ impl Board {
     fn mark(&mut self, num: u8) -> Option<u32> {
         for rownum in 0..5 {
             for colnum in 0..5 {
-                let cell = self.cells.get(rownum).unwrap().get(colnum).unwrap();
+                let cell = self.cells.get_mut(rownum).unwrap().get_mut(colnum).unwrap();
+                cell.marked = true;
                 if cell.value == num && !cell.marked {
                     let res = self.check_if_bingo(rownum, colnum );
                     if let Some(answer) = res {
                         return Some(answer);
                     }
-
                 }
             }
         }
         None
     }
 
-fn check_if_bingo(&mut self, rownum: usize, colnum: usize) -> Option<u32> {
+fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
         let mut marked_rows: u8 = 0;
         let mut marked_cols: u8 = 0;
         for i in 0..5 {
@@ -90,8 +92,6 @@ fn check_if_bingo(&mut self, rownum: usize, colnum: usize) -> Option<u32> {
             };
         }
 
-        let cell = self.cells.get_mut(rownum).unwrap().get_mut(colnum).unwrap();
-        cell.marked = true ;
         if marked_rows == 5 || marked_cols == 5 {
             return Some(1);
         }
@@ -112,4 +112,11 @@ impl Cell {
             marked: false,
         }
     }
+}
+
+
+fn main() {
+    let input = fs::read_to_string("./input/4.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }

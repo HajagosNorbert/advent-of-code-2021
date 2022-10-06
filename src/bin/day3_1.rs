@@ -1,3 +1,4 @@
+use std::fs;
 pub fn solve(input: &str) -> String {
     // assign an int to each bit position (there are 12 in the input)
     let mut pos_bits: [i32; 12] = [0; 12];
@@ -44,4 +45,10 @@ fn count_bits(input: &str, pos_bits: &mut [i32; 12]) {
             };
         }
     }
+}
+
+fn main() {
+    let input = fs::read_to_string("./input/3.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }

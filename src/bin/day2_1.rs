@@ -1,3 +1,5 @@
+use std::fs;
+
 pub fn solve(input: &str) -> String {
     let movements = format_input(&input);
     let pos = calculate_position(&movements);
@@ -117,4 +119,10 @@ mod tests {
             }
         )
     }
+}
+
+fn main() {
+    let input = fs::read_to_string("./input/2.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }

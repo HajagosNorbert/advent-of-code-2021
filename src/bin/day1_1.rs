@@ -1,3 +1,5 @@
+use std::fs;
+
 fn split_into_numbers(text: &str) -> Vec<i32> {
     text.split_whitespace()
         .map(|num| num.parse::<i32>().expect("not every input is number"))
@@ -27,4 +29,10 @@ pub fn solve(input: &str) -> String{
         prev_num = num;
     }
     count.to_string()
+}
+
+fn main() {
+    let input = fs::read_to_string("./input/1.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }

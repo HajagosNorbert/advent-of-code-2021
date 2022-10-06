@@ -1,5 +1,6 @@
 // consider 1st, 2nd, i-th, ... bit. oxygen: let c be the most common bit from the list at that position (at tie, be 1). Keep those binary numbers which have c as the i -th position. If you only have 1 number remaining, you have found the oxygen. If not, continue i to the next bit position.
 // same for co2 but with the least common bit. (at a tie, be 0)
+use std::fs;
 
 pub fn solve(input: &str) -> String {
     let input: Vec<&str> = input.split_whitespace().collect();
@@ -80,4 +81,10 @@ fn count_ones_to_zeroes(input: &[&str], pos: usize) -> i16 {
         };
     }
     result
+}
+
+fn main() {
+    let input = fs::read_to_string("./input/3.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }

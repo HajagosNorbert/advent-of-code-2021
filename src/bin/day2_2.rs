@@ -1,3 +1,4 @@
+use std::fs;
 pub fn solve(input: &str) -> String {
     let input = input.split_whitespace();
 
@@ -30,4 +31,10 @@ pub fn solve(input: &str) -> String {
 struct Position {
     horizontal: i32,
     depth: i32,
+}
+
+fn main() {
+    let input = fs::read_to_string("./input/2.txt").unwrap();
+    let res = solve(&input);
+    println!("{res}");
 }
