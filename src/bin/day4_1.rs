@@ -11,6 +11,7 @@ pub fn solve(input: &str) -> String {
     // populate the boards with the rest of the input data. every 25th element is the final cell
     let mut boards: Vec<Board> = boards
         .split("\n\n")
+        .skip(1)
         .map(|table_input| {
             table_input
                 .split('\n')
@@ -47,6 +48,7 @@ pub fn solve(input: &str) -> String {
 }
 
 // create a Board struct with cell-s in it as a 2d matrix
+#[derive(Debug)]
 struct Board {
     cells: Vec<Vec<Cell>>,
 }
@@ -63,14 +65,14 @@ impl Board {
             .collect::<Vec<Vec<Cell>>>();
         Board { cells }
     }
-// use array of structs to struct of arrays transformation (possibly with a flattened array ) then watch prime how he did it.
+    // use array of structs to struct of arrays transformation (possibly with a flattened array ) then watch prime how he did it.
     fn mark(&mut self, num: u8) -> Option<u32> {
         for rownum in 0..5 {
             for colnum in 0..5 {
                 let cell = self.cells.get_mut(rownum).unwrap().get_mut(colnum).unwrap();
-                cell.marked = true;
                 if cell.value == num && !cell.marked {
-                    let res = self.check_if_bingo(rownum, colnum );
+                    cell.marked = true;
+                    let res = self.check_if_bingo(rownum, colnum);
                     if let Some(answer) = res {
                         return Some(answer);
                     }
@@ -80,7 +82,7 @@ impl Board {
         None
     }
 
-fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
+    fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
         let mut marked_rows: u8 = 0;
         let mut marked_cols: u8 = 0;
         for i in 0..5 {
@@ -93,13 +95,26 @@ fn check_if_bingo(&self, rownum: usize, colnum: usize) -> Option<u32> {
         }
 
         if marked_rows == 5 || marked_cols == 5 {
-            return Some(1);
+            return Some(self.calculate_bingo());
         }
         None
+    }
+
+    fn calculate_bingo(&self) -> u32 {
+        self.cells
+            .iter()
+            .map(|row| {
+                row.iter()
+                    .filter(|cell| !cell.marked)
+                    .map(|cell| cell.value as u32)
+                    .sum::<u32>()
+            })
+            .sum()
     }
 }
 
 // create a Cell struct with value and is marked in it
+#[derive(Debug)]
 struct Cell {
     value: u8,
     marked: bool,
@@ -113,7 +128,6 @@ impl Cell {
         }
     }
 }
-
 
 fn main() {
     let input = fs::read_to_string("./input/4.txt").unwrap();

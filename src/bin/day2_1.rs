@@ -1,7 +1,40 @@
 use std::fs;
 
+pub fn solve2(input: &str) -> String {
+    let input = input.split_whitespace();
+
+    let mut aim: i32 = 0;
+    let mut input = input;
+    let mut pos = Position1 {
+        horizontal: 0,
+        depth: 0,
+    };
+    //go through the commands line by line!
+    while let Some(cmd) = input.next() {
+        let ammount: i32 = input.next().unwrap().parse().unwrap();
+        match cmd {
+            //if command concerns it, modify the aim
+            "down" => aim += ammount,
+            "up" => aim -= ammount,
+            //move forward and depth based on aim and input
+            "forward" => {
+                pos.horizontal += ammount;
+                pos.depth += aim * ammount;
+            }
+            _ => unreachable!(),
+        };
+    }
+    let result = pos.horizontal * pos.depth;
+    result.to_string()
+}
+
+//create one position struct where the current location is stored
+struct Position1 {
+    horizontal: i32,
+    depth: i32,
+}
 pub fn solve(input: &str) -> String {
-    let movements = format_input(&input);
+    let movements = format_input(input);
     let pos = calculate_position(&movements);
     let result = pos.forward * pos.depth;
     result.to_string()
@@ -27,7 +60,7 @@ fn format_input(input: &str) -> Vec<Movement> {
     let mut movements: Vec<Movement> = vec![];
     let mut straight_or_opposit: i32;
     let mut movement: Movement;
-    let mut input = input.into_iter();
+    let mut input = input;
     while let Some(i) = input.next() {
         straight_or_opposit = 1;
         let dir = match i {
@@ -124,5 +157,8 @@ mod tests {
 fn main() {
     let input = fs::read_to_string("./input/2.txt").unwrap();
     let res = solve(&input);
+    println!("{res}");
+    let input = fs::read_to_string("./input/2.txt").unwrap();
+    let res = solve2(&input);
     println!("{res}");
 }
