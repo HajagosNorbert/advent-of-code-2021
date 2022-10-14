@@ -17,21 +17,17 @@ enum Dir {
     Down(u32),
     Up(u32),
 }
-enum E{
-    Hi(&'static str),
-    H(std::num::ParseIntError)
-}
 
 impl std::str::FromStr for Dir {
-    type Err =  &'static str;
-fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = std::num::ParseIntError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (direction, amount) = s.split_once(' ').unwrap();
         let amount = amount.parse()?;
         match direction {
             "forward" => Ok(Dir::Forward(amount)),
             "down" => Ok(Dir::Down(amount)),
             "up" => Ok(Dir::Up(amount)),
-            _ => Err("No such direction"),
+            _ => unreachable!("this direction should not exist"),
         }
     }
 }
@@ -55,7 +51,10 @@ impl Position {
 
 fn aim_calculation(dir: &Dir, pos: &mut Position) {
     match dir {
-        Dir::Forward(amount) => { pos.forward += amount; pos.depth += amount * pos.aim },
+        Dir::Forward(amount) => {
+            pos.forward += amount;
+            pos.depth += amount * pos.aim
+        }
         Dir::Down(amount) => pos.aim += amount,
         Dir::Up(amount) => pos.aim -= amount,
     }
@@ -86,14 +85,14 @@ mod tests {
 
     #[test]
     fn day1_calculates_position() {
-        let input = [Dir::Down(10),Dir::Up(5), Dir::Forward(10)];
+        let input = [Dir::Down(10), Dir::Up(5), Dir::Forward(10)];
         let res = calculate_position(&input, simple_calculation).get_result();
         assert_eq!(res, 50);
     }
 
     #[test]
     fn day2_calculates_position() {
-        let input = [Dir::Down(10),Dir::Up(5), Dir::Forward(10)];
+        let input = [Dir::Down(10), Dir::Up(5), Dir::Forward(10)];
         let res = calculate_position(&input, aim_calculation).get_result();
         assert_eq!(res, 500);
     }
