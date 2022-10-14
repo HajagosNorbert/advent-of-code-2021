@@ -15,3 +15,6 @@ where
         .collect()
 }
 
+pub struct InputFormatError {
+    
+}
