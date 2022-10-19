@@ -1,4 +1,5 @@
 use std::fs;
+
 pub fn solve1(input: &str) -> String {
     // assign an int to each bit position (there are 12 in the input)
     let mut pos_bits: [i32; 12] = [0; 12];
@@ -55,11 +56,6 @@ fn main() {
     let res = solve2(&input);
     println!("{res}");
 }
-
-
-
-
-
 
 
 // consider 1st, 2nd, i-th, ... bit. oxygen: let c be the most common bit from the list at that position (at tie, be 1). Keep those binary numbers which have c as the i -th position. If you only have 1 number remaining, you have found the oxygen. If not, continue i to the next bit position.
@@ -133,4 +129,13 @@ fn count_ones_to_zeroes(input: &[&str], pos: usize) -> i16 {
         };
     }
     result
+}
+
+#[cfg(test)]
+mod tests {
+    // use super::*;
+    #[test]
+    fn task1_works(){
+
+    }
 }
